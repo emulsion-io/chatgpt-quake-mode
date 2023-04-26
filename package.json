@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-quake-mode",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Open chatGPT in Quake mode",
   "main": "main.js",
   "scripts": {
@@ -28,7 +28,6 @@
     "@electron-forge/maker-rpm": "^6.1.1",
     "@electron-forge/maker-squirrel": "^6.1.1",
     "@electron-forge/maker-zip": "^6.1.1",
-    "dotenv": "^16.0.3",
     "electron": "^24.1.2",
     "electron-reloader": "^1.2.3"
   },

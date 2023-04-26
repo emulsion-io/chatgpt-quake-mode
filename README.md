@@ -10,8 +10,6 @@ Control+shift+A Open quake mode by default.
 npm install
 ```
 
-.env-default : rename to .env and set your SHORTCUT
-
 ## Try
 
 ```bash

@@ -2,14 +2,13 @@
 const { BrowserWindow, screen, Menu, app, Tray, nativeTheme, nativeImage } = require('electron')
 if(require('electron-squirrel-startup')) return app.quit()
 const path = require('path')
-require('dotenv').config()
 const AutoLaunch = require('auto-launch')
 
 try {
    require('electron-reloader')(module)
 } catch (_) {}
 
-var shortcut = process.env.SHORTCUT
+var shortcut = "CommandOrControl+Shift+A"
 var mainWindow;
 var tray;
 
