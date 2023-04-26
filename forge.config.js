@@ -1,0 +1,28 @@
+module.exports = {
+  packagerConfig: {
+    icon: './icons/icon',
+  },
+  rebuildConfig: {},
+  makers: [
+    {
+      name: '@electron-forge/maker-squirrel',
+      config: {
+        name: 'QuakeGPT',
+        setupIcon: './icons/icon.ico',
+        loadingGif: './icons/splash.gif',
+      },
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {},
+    },
+  ],
+};

@@ -1,0 +1,39 @@
+{
+  "name": "chatgpt-quake-mode",
+  "version": "1.0.1",
+  "description": "Open chatGPT in Quake mode",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emulsion-io/chatgpt-quake-mode.git"
+  },
+  "keywords": [
+    "chatgpt"
+  ],
+  "author": "Fabrice - emulsion.io",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emulsion-io/chatgpt-quake-mode/issues"
+  },
+  "homepage": "https://github.com/emulsion-io/chatgpt-quake-mode#readme",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
+    "dotenv": "^16.0.3",
+    "electron": "^24.1.2",
+    "electron-reloader": "^1.2.3"
+  },
+  "dependencies": {
+    "auto-launch": "^5.0.5",
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}
