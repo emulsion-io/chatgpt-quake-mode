@@ -84,6 +84,12 @@ app.whenReady().then(() => {
         }
       },
       {
+        label: 'Reload',
+        click() {
+          ReloadApp()
+        }
+      },
+      {
         label: 'Quiter',
         click() {
             app.quit();
@@ -120,6 +126,10 @@ function showApp() {
       mainWindow.focus()
    }
 
+}
+
+function ReloadApp() {
+   mainWindow.reload()
 }
 
 function showHideApp() {
