@@ -1,5 +1,5 @@
 
-const { BrowserWindow, screen, Menu, app, Tray, nativeImage } = require('electron')
+const { BrowserWindow, screen, Menu, app, Tray, nativeImage, ipcMain } = require('electron')
 if(require('electron-squirrel-startup')) return app.quit()
 const path = require('path')
 
@@ -10,17 +10,22 @@ try {
 var shortcut = "CommandOrControl+Shift+A"
 var mainWindow;
 var tray;
+var width, height;
+var windowWidth;
+var windowHeight;
 
 const iconPath = path.join(__dirname, 'icons', 'icon.png')
 const icon = nativeImage.createFromPath(iconPath)
 
 function createWindow() {
-  // Obtenir la taille de l'écran
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+
+  const size = screen.getPrimaryDisplay().workAreaSize;
+  width = size.width;
+  height = size.height;
 
   // Calculer les dimensions de la fenêtre
-  const windowWidth = Math.round(width * 0.7)
-  const windowHeight = Math.round(height / 3)
+  windowWidth = Math.round(width * 0.7)
+  windowHeight = Math.round(height / 2)
 
   // Créer la fenêtre
   mainWindow = new BrowserWindow({
@@ -28,21 +33,44 @@ function createWindow() {
     height: windowHeight,
     x: Math.round((width - windowWidth) / 2), // Centrer horizontalement
     y: -windowHeight, // Positionner la fenêtre en haut de l'écran
-    frame: false, // Masquer le cadre de la fenêtre
+    frame: false, 
     webPreferences: {
-      nodeIntegration: true // Autoriser l'intégration de Node.js dans la fenêtre
+      nodeIntegration: true,
+      webviewTag: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   })
 
-  mainWindow.loadURL('https://chat.openai.com')
+  //mainWindow.loadURL('https://chat.openai.com')
+  mainWindow.loadFile('index.html')
 
-   // Register a global shortcut to toggle the window visibility
-   const { globalShortcut } = require('electron')
-   globalShortcut.register(shortcut, () => {
-   mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-   })
+  var splash = new BrowserWindow({
+      width: 400, 
+      height: 400, 
+      transparent: true, 
+      frame: false, 
+      alwaysOnTop: true 
+  });
 
-  // Afficher la fenêtre avec un effet de glissement
+  splash.loadFile('splash.html');
+  splash.center();
+
+  setTimeout(function () {
+    mainWindow.show();
+  }, 1500);
+  setTimeout(function () {
+    splash.close();
+  }, 2000);
+
+  // Ouvrir les DevTools.
+  //mainWindow.webContents.openDevTools()
+
+  // Register a global shortcut to toggle the window visibility
+  const { globalShortcut } = require('electron')
+  globalShortcut.register(shortcut, () => {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+  })
+
   mainWindow.show()
   mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
 }
@@ -62,7 +90,7 @@ app.whenReady().then(() => {
       {
         label: 'Reload',
         click() {
-          ReloadApp()
+          reloadApp()
         }
       },
       {
@@ -94,24 +122,54 @@ app.on('window-all-closed', () => {
   }
 })
 
+ipcMain.on('close-app', () => {
+  closeApp();
+});
+
+ipcMain.on('minimize-app', () => {
+  minimizeApp();
+});
+
+ipcMain.on('hide-app', () => {
+  hideApp();
+});
+
+ipcMain.on('reload-app', () => {
+  reloadApp();
+});
+
 function showApp() {
+    mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
 
    if (mainWindow.isFocused()) {
    } else {
       mainWindow.show()
       mainWindow.focus()
    }
-
-}
-
-function ReloadApp() {
-   mainWindow.reload()
 }
 
 function showHideApp() {
+  mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
    if (mainWindow && mainWindow.isVisible()) {
       mainWindow.hide()
    } else { 
       mainWindow.show()
    }
+}
+
+function closeApp () {
+    mainWindow.close()
+}
+
+function minimizeApp () {
+    mainWindow.minimize()
+}
+
+function hideApp () {
+    mainWindow.hide()
+}
+
+function reloadApp() {
+  mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
+  mainWindow.reload()
 }

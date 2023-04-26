@@ -1,0 +1,38 @@
+#webview {
+   width: 100%;
+   height: calc(100% - 40px);
+ }
+
+.fix-bottom {
+  position: fixed;
+  height: 30px;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: #202123;
+  padding: 5px;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.btn {
+  background-color: #202123;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 0px 2px;
+  cursor: pointer;
+  -webkit-user-select: auto;
+  -webkit-app-region: no-drag; 
+}
+
+.btn:hover {
+  background-color: #4CAF50;
+  border-radius: 5px;
+  -webkit-user-select: auto; 
+  -webkit-app-region: no-drag;
+}

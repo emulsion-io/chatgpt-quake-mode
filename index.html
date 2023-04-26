@@ -2,10 +2,18 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; connect-src *; script-src 'self' 'unsafe-inline';" />
     <title>QuakeGPT!</title>
+    <link rel="stylesheet" href="./assets/css/simple-grid.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
   </head>
   <body>
-
+    <webview id="webview" src="https://chat.openai.com"></webview>
+    <div class="fix-bottom">
+      <div class="center">
+        <span class="btn cursor" id="btn-hide">Minimize</span> / <span class="btn cursor" id="btn-reload">Reload</span> / <span class="cursor btn" id="btn-close">Quit</span>
+      </div>
+    </div>
+    <script src="./assets/js/app.js"></script>
   </body>
 </html>
