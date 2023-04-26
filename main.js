@@ -1,8 +1,7 @@
 
-const { BrowserWindow, screen, Menu, app, Tray, nativeTheme, nativeImage } = require('electron')
+const { BrowserWindow, screen, Menu, app, Tray, nativeImage } = require('electron')
 if(require('electron-squirrel-startup')) return app.quit()
 const path = require('path')
-const AutoLaunch = require('auto-launch')
 
 try {
    require('electron-reloader')(module)
@@ -11,28 +10,6 @@ try {
 var shortcut = "CommandOrControl+Shift+A"
 var mainWindow;
 var tray;
-
-const autoLauncher = new AutoLaunch({
-   name: app.name
-})
-
-app.on('ready', async () => {
-   const isEnabled = await autoLauncher.isEnabled()
- 
-   if (!isEnabled) {
-     const response = await dialog.showMessageBox({
-       type: 'question',
-       buttons: ['Oui', 'Non'],
-       defaultId: 0,
-       title: 'Auto-lancement',
-       message: 'Voulez-vous que l\'application se lance automatiquement au démarrage du système ?'
-     })
- 
-     if (response.response === 0) {
-       await autoLauncher.enable()
-     }
-   }
-})
 
 const iconPath = path.join(__dirname, 'icons', 'icon.png')
 const icon = nativeImage.createFromPath(iconPath)
