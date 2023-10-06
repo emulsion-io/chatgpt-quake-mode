@@ -1,5 +1,5 @@
 
-const { BrowserWindow, screen, Menu, app, Tray, nativeImage, ipcMain } = require('electron')
+const { BrowserWindow, screen, Menu, MenuItem, app, Tray, nativeImage, ipcMain } = require('electron')
 if(require('electron-squirrel-startup')) return app.quit()
 const path = require('path')
 
@@ -7,6 +7,7 @@ try {
    require('electron-reloader')(module)
 } catch (_) {}
 
+var menu     = new Menu();
 var shortcut = "CommandOrControl+Shift+A"
 var mainWindow;
 var tray;
@@ -16,6 +17,15 @@ var windowHeight;
 
 const iconPath = path.join(__dirname, 'icons', 'icon.png')
 const icon = nativeImage.createFromPath(iconPath)
+
+menu.append(new MenuItem({ label: 'QuakeGPT', enabled: false}));
+menu.append(new MenuItem({ type: 'separator' }));
+menu.append(new MenuItem({ role: 'cut' }));
+menu.append(new MenuItem({ role: 'copy' }));
+menu.append(new MenuItem({ role: 'paste' }));
+menu.append(new MenuItem({ type: 'separator' }));
+menu.append(new MenuItem({ role: 'undo' }));
+menu.append(new MenuItem({ role: 'redo' }));
 
 function createWindow() {
 
@@ -116,6 +126,12 @@ app.whenReady().then(() => {
    })
 })
 
+app.on("web-contents-created", (...[/* event */, webContents]) => {
+  webContents.on("context-menu", (event, click) => {
+    event.preventDefault();
+    menu.popup(webContents);
+  }, false);
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
