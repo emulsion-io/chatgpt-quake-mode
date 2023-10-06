@@ -8,3 +8,8 @@ contextBridge.exposeInMainWorld('app', {
    hideApp: () => ipcRenderer.send('hide-app'),
    onTop: () => ipcRenderer.send('on-top'),
 });
+
+ipcRenderer.on('package-json', (event, packageJson) => {
+   document.getElementById('version').innerHTML = packageJson.version;
+});
+

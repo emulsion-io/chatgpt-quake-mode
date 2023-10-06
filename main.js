@@ -2,6 +2,7 @@
 const { BrowserWindow, screen, Menu, MenuItem, app, Tray, nativeImage, ipcMain } = require('electron')
 if(require('electron-squirrel-startup')) return app.quit()
 const path = require('path')
+const fs = require('fs')
 
 try {
    require('electron-reloader')(module)
@@ -28,6 +29,8 @@ menu.append(new MenuItem({ role: 'undo' }));
 menu.append(new MenuItem({ role: 'redo' }));
 
 function createWindow() {
+
+  const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
   const size = screen.getPrimaryDisplay().workAreaSize;
   width = size.width;
@@ -74,13 +77,17 @@ function createWindow() {
   }, 2000);
 
   // Ouvrir les DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Register a global shortcut to toggle the window visibility
   const { globalShortcut } = require('electron')
   globalShortcut.register(shortcut, () => {
     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
   })
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('package-json', packageJson);
+  });
 
   mainWindow.show()
   mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
