@@ -19,5 +19,5 @@ npm run start
 ## Make executable
 
 ```bash
-npm make run
+npx electron-forge make
 ```
