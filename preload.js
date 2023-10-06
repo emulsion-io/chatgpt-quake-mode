@@ -6,4 +6,5 @@ contextBridge.exposeInMainWorld('app', {
    minimizeApp: () => ipcRenderer.send('minimize-app'),
    reloadApp: () => ipcRenderer.send('reload-app'),
    hideApp: () => ipcRenderer.send('hide-app'),
+   onTop: () => ipcRenderer.send('on-top'),
 });

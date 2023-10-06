@@ -35,6 +35,7 @@ function createWindow() {
     y: -windowHeight, // Positionner la fenêtre en haut de l'écran
     frame: false, 
     webPreferences: {
+      spellcheck: true,
       nodeIntegration: true,
       webviewTag: true,
       preload: path.join(__dirname, 'preload.js')
@@ -101,8 +102,8 @@ app.whenReady().then(() => {
       }
    ];
 
-   const contextMenu = Menu.buildFromTemplate(template);
-   tray.setContextMenu(contextMenu);
+   const contextMenuTray = Menu.buildFromTemplate(template);
+   tray.setContextMenu(contextMenuTray);
  
    tray.on('click', () => {
       showApp()
@@ -136,6 +137,10 @@ ipcMain.on('hide-app', () => {
 
 ipcMain.on('reload-app', () => {
   reloadApp();
+});
+
+ipcMain.on('on-top', () => {
+  onTop();
 });
 
 function showApp() {
@@ -172,4 +177,12 @@ function hideApp () {
 function reloadApp() {
   mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
   mainWindow.reload()
+}
+
+function onTop() {
+  if (mainWindow.isAlwaysOnTop()) {
+    mainWindow.setAlwaysOnTop(false)
+  } else {
+    mainWindow.setAlwaysOnTop(true)
+  }
 }
