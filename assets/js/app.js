@@ -6,11 +6,6 @@
  * 
  */
 
-/*const minimizeBtn = document.getElementById("btn-minimize");
-minimizeBtn.addEventListener("click", () => {
-    app.minimizeApp();
-});*/
-
 const hideBtn = document.getElementById("btn-hide");
 hideBtn.addEventListener("click", () => {
     app.hideApp();
@@ -30,4 +25,3 @@ const onTopBtn = document.getElementById("btn-on-top");
 onTopBtn.addEventListener("click", () => {
     app.onTop();
 });
-
