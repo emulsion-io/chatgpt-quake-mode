@@ -5,10 +5,10 @@ const path = require('path')
 const fs = require('fs');
 
 try {
-   require('electron-reloader')(module)
+  require('electron-reloader')(module)
 } catch (_) {}
 
-var menu     = new Menu();
+
 var shortcut = "CommandOrControl+Shift+A"
 var mainWindow;
 var tray;
@@ -18,15 +18,6 @@ var windowHeight;
 
 const iconPath = path.join(__dirname, 'icons', 'icon.png')
 const icon = nativeImage.createFromPath(iconPath)
-
-menu.append(new MenuItem({ label: 'QuakeGPT', enabled: false}));
-menu.append(new MenuItem({ type: 'separator' }));
-menu.append(new MenuItem({ role: 'cut' }));
-menu.append(new MenuItem({ role: 'copy' }));
-menu.append(new MenuItem({ role: 'paste' }));
-menu.append(new MenuItem({ type: 'separator' }));
-menu.append(new MenuItem({ role: 'undo' }));
-menu.append(new MenuItem({ role: 'redo' }));
 
 function createWindow() {
   const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
@@ -53,6 +44,9 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   })
+
+  mainWindow.webContents.session.setSpellCheckerLanguages(['en-US', 'fr'])
+  const possibleLanguages = mainWindow.webContents.session.availableSpellCheckerLanguages
 
   //mainWindow.loadURL('https://chat.openai.com')
   mainWindow.loadFile('index.html')
@@ -93,11 +87,11 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-   createWindow()
+  createWindow()
 
-   tray = new Tray(icon)
-   
-   const template = [
+  tray = new Tray(icon)
+
+  const template = [
       {
         label: 'Show/Hide',
         click() {
@@ -116,25 +110,70 @@ app.whenReady().then(() => {
             app.quit();
         }
       }
-   ];
+  ];
 
-   const contextMenuTray = Menu.buildFromTemplate(template);
-   tray.setContextMenu(contextMenuTray);
- 
-   tray.on('click', () => {
+  const contextMenuTray = Menu.buildFromTemplate(template);
+  tray.setContextMenu(contextMenuTray);
+
+  tray.on('click', () => {
       showApp()
-   })
+  })
 
-   app.on('activate', () => {
-     if (BrowserWindow.getAllWindows().length === 0) {
-       createWindow()
-     }
-   })
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow()
+    }
+  })
 })
 
+
 app.on("web-contents-created", (...[/* event */, webContents]) => {
-  webContents.on("context-menu", (event, click) => {
+
+  webContents.on("context-menu", (event, params) => {
     event.preventDefault();
+
+    const menu     = new Menu();
+    menu.append(new MenuItem({ label: 'QuakeGPT', enabled: false}));
+    menu.append(new MenuItem({ type: 'separator' }));
+    menu.append(new MenuItem({ role: 'cut' }));
+    menu.append(new MenuItem({ role: 'copy' }));
+    menu.append(new MenuItem({ role: 'paste' }));
+    menu.append(new MenuItem({ type: 'separator' }));
+    menu.append(new MenuItem({ role: 'undo' }));
+    menu.append(new MenuItem({ role: 'redo' }));
+    menu.append(new MenuItem({ type: 'separator' }));
+    menu.append(new MenuItem({ role: 'toggleSpellChecker' }));
+    menu.append(new MenuItem({ role: 'toggleDevTools' }));
+
+    const correctionSubMenu = new Menu();
+
+    for (const suggestion of params.dictionarySuggestions) {
+      correctionSubMenu.append(new MenuItem({
+        label: suggestion,
+        click: () => mainWindow.webContents.replaceMisspelling(suggestion)
+      }))
+    }
+
+    if (correctionSubMenu.items.length > 0) {
+      menu.append(
+        new MenuItem({
+          label: 'Corrections', // Label du sous-menu
+          submenu: correctionSubMenu // Ajouter le sous-menu de corrections
+        })
+      );
+    }
+
+    if (params.misspelledWord) {
+      if (correctionSubMenu.items.length > 0) {
+        correctionSubMenu.append(
+          new MenuItem({
+            label: 'Add to dictionary', // Option pour ajouter au dictionnaire dans le sous-menu des corrections
+            click: () => mainWindow.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+          })
+        );
+      }
+    }
+
     menu.popup(webContents);
   }, false);
 });
@@ -166,34 +205,35 @@ ipcMain.on('on-top', () => {
 });
 
 function showApp() {
-    mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
+  mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
 
-   if (mainWindow.isFocused()) {
-   } else {
-      mainWindow.show()
-      mainWindow.focus()
-   }
+  if (mainWindow.isFocused()) {
+
+  } else {
+    mainWindow.show()
+    mainWindow.focus()
+  }
 }
 
 function showHideApp() {
   mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
-   if (mainWindow && mainWindow.isVisible()) {
-      mainWindow.hide()
-   } else { 
-      mainWindow.show()
-   }
+  if (mainWindow && mainWindow.isVisible()) {
+    mainWindow.hide()
+  } else { 
+    mainWindow.show()
+  }
 }
 
 function closeApp () {
-    mainWindow.close()
+  mainWindow.close()
 }
 
 function minimizeApp () {
-    mainWindow.minimize()
+  mainWindow.minimize()
 }
 
 function hideApp () {
-    mainWindow.hide()
+  mainWindow.hide()
 }
 
 function reloadApp() {

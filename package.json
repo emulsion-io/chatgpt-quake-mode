@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-quake-mode",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Open chatGPT in Quake mode",
   "main": "main.js",
   "scripts": {

@@ -1,7 +1,7 @@
 #webview {
-   width: 100%;
-   height: calc(100% - 40px);
- }
+  width: 100%;
+  height: calc(100% - 40px);
+}
 
 .fix-bottom {
   position: fixed;
@@ -13,6 +13,7 @@
   padding: 5px;
   -webkit-user-select: none;
   -webkit-app-region: drag;
+  cursor: move;
 }
 
 .btn {
