@@ -8,12 +8,45 @@
     <link rel="stylesheet" href="./assets/css/styles.css">
   </head>
   <body>
-    <webview id="webview" src="https://chat.openai.com"></webview>
+
+    <tab-group new-tab-button="true">
+      <style>
+      .views {
+        height: calc(100vh - 68px) !important;
+        position: relative;
+      }
+      .nav {
+        background-color: #202123;
+        box-shadow: unset;
+        -webkit-user-select: none;
+        -webkit-app-region: drag;
+      }
+      .tab {
+        box-shadow: unset !important;
+        background: #202123;
+        border-left: unset !important;
+        border-right : unset !important;
+        -webkit-user-select: auto;
+        -webkit-app-region: no-drag; 
+      }
+      .tab.active {
+        background: #343541;
+      }
+      .buttons {
+        border-left: unset !important;
+        -webkit-user-select: auto;
+        -webkit-app-region: no-drag;
+      }
+      </style>
+    </tab-group>
+    
     <div class="fix-bottom">
       <div class="center">
         <span class="btn cursor" id="btn-on-top">OnTop</span> / <span class="btn cursor" id="btn-hide">Minimize</span> / <span class="btn cursor" id="btn-reload">Reload</span> / <span class="cursor btn" id="btn-close">Quit</span> <span class="version">v: <span id="version">1.3.5</span></span>
       </div>
     </div>
+    <script src="./node_modules/electron-tabs/dist/electron-tabs.js"></script>
     <script src="./assets/js/app.js"></script>
+
   </body>
 </html>

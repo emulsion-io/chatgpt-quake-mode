@@ -1,8 +1,3 @@
-#webview {
-  width: 100%;
-  height: calc(100% - 40px);
-}
-
 .fix-bottom {
   position: fixed;
   height: 30px;

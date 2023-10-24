@@ -1,5 +1,5 @@
 
-const { BrowserWindow, screen, Menu, MenuItem, app, Tray, nativeImage, ipcMain } = require('electron')
+const { dialog, BrowserWindow, screen, Menu, MenuItem, app, Tray, nativeImage, ipcMain } = require('electron')
 if(require('electron-squirrel-startup')) return app.quit()
 const path = require('path')
 const fs = require('fs');
@@ -7,7 +7,6 @@ const fs = require('fs');
 try {
   require('electron-reloader')(module)
 } catch (_) {}
-
 
 var shortcut = "CommandOrControl+Shift+A"
 var mainWindow;
@@ -139,6 +138,8 @@ app.on("web-contents-created", (...[/* event */, webContents]) => {
     menu.append(new MenuItem({ role: 'copy' }));
     menu.append(new MenuItem({ role: 'paste' }));
     menu.append(new MenuItem({ type: 'separator' }));
+    menu.append(new MenuItem({ label: 'Editer onglet', click: () => { setOnglet() } }));
+    menu.append(new MenuItem({ type: 'separator' }));
     menu.append(new MenuItem({ role: 'undo' }));
     menu.append(new MenuItem({ role: 'redo' }));
     menu.append(new MenuItem({ type: 'separator' }));
@@ -203,6 +204,19 @@ ipcMain.on('reload-app', () => {
 ipcMain.on('on-top', () => {
   onTop();
 });
+
+ipcMain.on('get-onglet', (event, tabID) => {
+  getOnglet(tabID);
+});
+
+function setOnglet() {
+  mainWindow.webContents.send('update-counter', 0)
+  //dialog.showErrorBox('Title', 'Prompt text') 
+}
+
+function getOnglet(tabID) {
+  //tabID
+}
 
 function showApp() {
   mainWindow.setPosition(Math.round((width - windowWidth) / 2), 0, true)
