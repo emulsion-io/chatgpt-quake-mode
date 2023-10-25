@@ -44,12 +44,40 @@ const tab = tabGroup.addTab({
     active: true
 });
 
-tabGroup.on("tab-active", (tab, tabGroup) => { 
-    var idTab = tabGroup.getActiveTab().id;
-    window.app.getOnglet(idTab);
+window.app.handleOnglet((event, id) => {
+    editOnglet()
+})
+
+tabGroup.on("tab-active", (tab, tabGroup) => {
+    ongletClick(tab);
 });
 
-window.app.handleOnglet((event, id) => {
+let lastClickedTab = null;
+let clickCount = 0;
+let clickTimeout;
+const doubleClickDelay = 300;
+
+function ongletClick(tab) {
+    clickCount++;
+
+    if (clickCount === 1) {
+        clickTimeout = setTimeout(() => {
+            console.log('Clic simple sur l\'onglet');
+            clickCount = 0;
+        }, doubleClickDelay);
+    } else if (clickCount === 2) {
+        if (tab === lastClickedTab) {
+            editOnglet();
+            clickCount = 0;
+        } else {
+            clickCount = 1;
+        }
+    }
+
+    lastClickedTab = tab;
+}
+
+function editOnglet() {
     Swal.fire({
         title: 'Change tab name',
         input: 'text',
@@ -68,4 +96,4 @@ window.app.handleOnglet((event, id) => {
 
         }
     })
-})
+}

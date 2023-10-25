@@ -7,7 +7,6 @@ contextBridge.exposeInMainWorld('app', {
    reloadApp: () => ipcRenderer.send('reload-app'),
    hideApp: () => ipcRenderer.send('hide-app'),
    onTop: () => ipcRenderer.send('on-top'),
-   getOnglet: (tabID) => ipcRenderer.send('get-onglet', tabID),
    handleOnglet: (callback) => ipcRenderer.on('update-onglet', callback)
 });
 

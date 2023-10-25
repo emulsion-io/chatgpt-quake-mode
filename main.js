@@ -205,14 +205,6 @@ ipcMain.on('on-top', () => {
   onTop();
 });
 
-ipcMain.on('get-onglet', (event, tabID) => {
-  getOnglet(tabID);
-});
-
-function getOnglet(tabID) {
-  //tabID
-}
-
 function setOnglet() {
   mainWindow.webContents.send('update-onglet', 0)
 }
