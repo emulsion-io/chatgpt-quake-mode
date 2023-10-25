@@ -209,13 +209,12 @@ ipcMain.on('get-onglet', (event, tabID) => {
   getOnglet(tabID);
 });
 
-function setOnglet() {
-  mainWindow.webContents.send('update-counter', 0)
-  //dialog.showErrorBox('Title', 'Prompt text') 
-}
-
 function getOnglet(tabID) {
   //tabID
+}
+
+function setOnglet() {
+  mainWindow.webContents.send('update-onglet', 0)
 }
 
 function showApp() {

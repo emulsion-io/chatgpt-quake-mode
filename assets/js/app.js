@@ -6,12 +6,6 @@
  * 
  */
 
-/**
- * 
- * Button bottom
- * 
- */
-
 const hideBtn = document.getElementById("btn-hide");
 hideBtn.addEventListener("click", () => {
     window.app.hideApp();
@@ -55,7 +49,23 @@ tabGroup.on("tab-active", (tab, tabGroup) => {
     window.app.getOnglet(idTab);
 });
 
-window.app.handleCounter((event, id) => {
-    console.log(id);
-    tabGroup.getTab(id).setTitle('Test');
+window.app.handleOnglet((event, id) => {
+    Swal.fire({
+        title: 'Change tab name',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Ok',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+            tabGroup.getActiveTab().setTitle(login);
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+        }
+    })
 })
