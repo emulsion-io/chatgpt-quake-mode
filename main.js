@@ -27,7 +27,7 @@ function createWindow() {
 
   // Calculer les dimensions de la fenêtre
   windowWidth = Math.round(width * 0.7)
-  windowHeight = Math.round(height / 2)
+  windowHeight = Math.round(height / 1.8)
 
   // Créer la fenêtre
   mainWindow = new BrowserWindow({
