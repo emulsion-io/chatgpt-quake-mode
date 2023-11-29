@@ -74,8 +74,12 @@ function createWindow() {
   // Register a global shortcut to toggle the window visibility
   const { globalShortcut } = require('electron')
   globalShortcut.register(shortcut, () => {
-    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-  })
+    if (mainWindow.isFocused()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('package-json', packageJson);

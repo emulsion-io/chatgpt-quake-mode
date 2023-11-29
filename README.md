@@ -1,6 +1,6 @@
 # chatgpt-quake-mode
 
-Show ChatGPT in quake mode.
+Open ChatGPT in multiple tabs and allow you to overlay the windows.
 
 Control+shift+A Open quake mode by default.
 

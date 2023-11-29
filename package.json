@@ -1,7 +1,7 @@
 {
   "name": "chatgpt-quake-mode",
-  "version": "1.4.2",
-  "description": "Open chatGPT in Quake mode",
+  "version": "1.4.4",
+  "description": "Open ChatGPT in multiple tabs and allow you to overlay the windows.",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
